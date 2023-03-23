@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'encyclopédie vivante</title>
+    <style>
+        body {
+            background-image: url('/static/dragon_3.jpg');
+            background-size: cover;
+            background-position:center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #333;
+            font-family: 'Roboto', sans-serif;
+            margin: 5;
+            padding: 5;
+            line-height: 1.5;
+            font-weight: semibold;
+            font-size: 20px;
+            color: black;
+          }
+
+        /* Ajout de l'espacement pour améliorer la lisibilité */
+        h1, h2, p, input, button, textarea {
+            margin-bottom: 1rem;
+        }
+        
+        input[type="text"] {
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 0.5rem;
+            font-family: 'Roboto', sans-serif;
+            /* Ajout d'une transition pour une expérience utilisateur plus fluide */
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #00b3ff;
+            border-radius: 5px;
+            /* Ajout d'une ombre pour donner de la profondeur */
+            box-shadow: 0 0 8px rgba(0, 179, 255, 0.5);
+        }
+
+        #login-form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+      
+        #character-stats {
+            background-color: #fff;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            border-radius: 5px;
+            /* Ajout d'une ombre pour donner de la profondeur */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        #character-stats h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        #game-container {
+            max-width: 800px;
+            border-radius: 5px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            text-align: center;
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 500;
+        }
+        
+        #game-dialogue {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 1rem;
+            height: 600px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease-in-out;
+        }
+        
+        #game-dialogue:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        #message-input {
+            width: 96%;
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        #message-input:focus {
+            outline: none;
+            border-color: #00b3ff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+        }
+        
+        .message strong {
+            font-weight: 500;
+        }
+        
+        footer {
+            margin-top: auto;
+        }
+        
+        button {
+            background-color: #00b3ff;
+            border: none;
+            border-radius: 5px;
+            padding: 0.3rem 1rem;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            color: #fff;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        button:hover {
+            background-color: #007acc;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:last-of-type {
+            margin-right: 0;
+        }
+
+
+    </style>
+      <script>
+  function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+    const expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+
+  function getCookie(cname) {
+    const name = cname + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(";");
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == " ") {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+</script>  
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <h1>Le livre de 🐉Dragon.kanji🐉</br></h1>
+        </header>
+        <div id="login-form" style="display: block;">
+          <label for="username">Nom d'utilisateur:</label>
+          <input type="text" id="username" />
+          <button id="login-button">Se connecter</button>
+        </div>
+        <button id="save-button" style="display: none;">Sauvegarder</button>
+        <button id="load-button" style="display: none;">Charger</button>
+      <div id="character-stats" style="display: none;">
+            <h2>Statistiques du personnage</h2>
+            <p>Force : <span id="stat-strength">0</span></p>
+            <p>Charisme : <span id="stat-charisma">0</span></p>
+            <p>Dextérité : <span id="stat-dexterity">0</span></p>
+            <p>Intelligence : <span id="stat-intelligence">0</span></p>
+        </div>
+      <div id="intro-text">
+            <!-- Texte de mise en situation -->
+            Bonjour, bienvenue cher joueur. Prenez une chaise et commencez à jouer. Vous devrez commencer par me dire qui vous êtes et d'où vous venez !
+        </div>
+        <button id="start-button">Lancer le jeu</button>
+        <div id="game-dialogue" style="display: none;">
+            <!-- Espace de jeu et boite de dialogue -->
+            <div id="dialogue-history"></div>
+            <div id="loading" style="display: none;">Chargement...</div>
+            <textarea id="message-input" placeholder="Entrez votre message ici" rows="3"></textarea>
+        </div>
+    </div>
+    <script>        
+        let messages = [];
+        let loading = false;
+        let characterInfo = "";
+        let universeInfo = "";
+
+        document.getElementById("start-button").addEventListener("click", function () {
+          document.getElementById("intro-text").style.display = "none";
+          document.getElementById("start-button").style.display = "none";
+          document.getElementById("game-dialogue").style.display = "block";
+          const dialogueHistory = document.getElementById("dialogue-history");
+          const aiMessageElement = document.createElement("div");
+          aiMessageElement.innerHTML = `<div class="message">Bienvenue, aventurier 🎉! Vous êtes sur le point d'entrer dans un monde d'exploration, de mystères et de quêtes palpitantes. Je suis votre guide, le maître du jeu, et je vous aiderai tout au long de votre aventure en vous présentant des défis, des choix et des options pour vous permettre de progresser dans l'histoire.<br><br>
+Décrivez moi votre personnage (nom, physique, etc) et l'univers qui l'entoure. Celui-ci possède quatre statistiques clés : force 💪, charisme 😎, intelligence 🧠 et dextérité 🤸. Ces statistiques évolueront en fonction de vos actions et décisions tout au long du jeu, influençant ainsi les possibilités qui s'offrent à vous.<br><br>
+Allez, préparez-vous pour une aventure épique ! N'hésitez pas à me poser des questions ou à solliciter mon aide à tout moment. Bonne chance et amusez-vous bien ! 🌟
+</div>`;
+          dialogueHistory.appendChild(aiMessageElement);
+      });
+
+      
+        document.getElementById("message-input").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        if (event.shiftKey) {
+            // Insérer un saut de ligne lorsque Maj + Entrée est enfoncé
+            this.value += "\n";
+        } else {
+            sendMessage(event.target.value);
+        }
+    }
+});
+
+
+      
+        document.getElementById("login-button").addEventListener("click", function () {
+          const username = document.getElementById("username").value;
+          if (username) {
+            setCookie("username", username, 30);
+            document.getElementById("login-form").style.display = "none";
+            document.getElementById("save-button").style.display = "block";
+            document.getElementById("load-button").style.display = "block";
+          }
+        });
+
+        document.getElementById("save-button").addEventListener("click", function () {
+        fetch("/save_game", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `username=${encodeURIComponent(getCookie("username"))}&messages=${encodeURIComponent(
+            JSON.stringify(messages)
+          )}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            alert(data.message);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
+    
+        document.getElementById("load-button").addEventListener("click", function () {
+      fetch(`/load_game?username=${encodeURIComponent(getCookie("username"))}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.messages) {
+            messages = JSON.parse(data.messages);
+            const dialogueHistory = document.getElementById("dialogue-history");
+            dialogueHistory.innerHTML = "";
+
+            for (const message of messages) {
+              const messageElement = document.createElement("div");
+              messageElement.innerHTML = `<div class="message"><strong>${
+                message.role === "user" ? "Vous" : "Le maître du jeu"
+              }:</strong> ${message.content}</div>`;
+              dialogueHistory.appendChild(messageElement);
+            }
+
+            dialogueHistory.scrollTop = dialogueHistory.scrollHeight;
+          } else {
+            alert("Aucune partie sauvegardée trouvée.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+
+    function processInput(userMessage) {
+    const processedMessage = {
+        characterInfo: "",
+        universeInfo: "",
+        originalMessage: userMessage,
+    };
+
+    const lines = userMessage.split("\n");
+    for (const line of lines) {
+        if (line.toLowerCase().startsWith("personnage:")) {
+            processedMessage.characterInfo = line.substring("personnage:".length).trim();
+        } else if (line.toLowerCase().startsWith("univers:")) {
+            processedMessage.universeInfo = line.substring("univers:".length).trim();
+        } else if (line.toLowerCase().startsWith("caractéristiques:")) {
+            processedMessage.characterInfo = line.substring("caractéristiques:".length).trim();
+        }
+    }
+
+    return processedMessage;
+}
+      
+    function sendMessage(message) {
+    if (loading) return;
+    loading = true;
+    document.getElementById("loading").style.display = "block";
+
+    const userInput = document.getElementById("message-input");
+    const dialogueHistory = document.getElementById("dialogue-history");
+    const userMessage = userInput.value || message;
+
+    if (!userMessage) return;
+
+    // Vérifier si les informations sur le personnage et l'univers ont été fournies
+    const processedMessage = processInput(userMessage);
+    if (processedMessage.characterInfo) {
+        characterInfo = processedMessage.characterInfo;
+    }
+    if (processedMessage.universeInfo) {
+        universeInfo = processedMessage.universeInfo;
+    }
+
+    // Afficher le message de l'utilisateur
+    const userMessageElement = document.createElement("div");
+    userMessageElement.innerHTML = `<div class="message"><strong>Vous:</strong> ${userMessage}</div>`;
+    dialogueHistory.appendChild(userMessageElement);
+
+    userInput.value = "";
+
+    // Envoyer le message au serveur et afficher la réponse de l'IA
+    fetch("/talk", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `message=${encodeURIComponent(userMessage)}&username=${encodeURIComponent(getCookie("username"))}&messages=${encodeURIComponent(JSON.stringify(messages))}&characterInfo=${encodeURIComponent(characterInfo)}&universeInfo=${encodeURIComponent(universeInfo)}`,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        messages.push({ role: "ai", content: data.response });
+
+        // Afficher le message de l'IA
+        const aiMessageElement = document.createElement("div");
+        aiMessageElement.innerHTML = `<div class="message"><strong>Le Maître du Jeu:</strong> ${data.response}</div>`;
+        dialogueHistory.appendChild(aiMessageElement);
+
+        dialogueHistory.scrollTop = dialogueHistory.scrollHeight;
+        loading = false;
+        document.getElementById("loading").style.display = "none";
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        loading = false;
+        document.getElementById("loading").style.display = "none";
+      });
+}
+
+</script>
+</body>
+</html>
